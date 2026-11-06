@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mach One Loaders | Canadian Firearms Accessories & Speed Loaders</title>
-    
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Tailwind Custom Theme Configuration -->
     <script>
         tailwind.config = {
@@ -41,7 +41,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- External Custom Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -63,11 +63,11 @@
         </div>
     </div>
 
-    <!-- MAIN GUNPOST-STYLE HEADER -->
+    <!-- MAIN HEADER -->
     <header class="bg-gunpost-navy text-white border-b-4 border-gunpost-green">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                
+
                 <!-- Logo & Title -->
                 <a href="#" class="flex items-center space-x-3 group text-center sm:text-left">
                     <div class="bg-gunpost-green text-white p-2.5 rounded font-bold text-xl flex items-center justify-center shadow">
@@ -84,19 +84,10 @@
                     </div>
                 </a>
 
-                <!-- Search Bar & Caliber Dropdown -->
+                <!-- Search Bar -->
                 <div class="w-full md:w-auto flex-grow max-w-xl">
                     <div class="flex bg-white rounded overflow-hidden p-0.5 border border-slate-300 shadow-inner">
-                        <select id="search-caliber-select" class="bg-slate-100 text-gunpost-textDark text-xs font-semibold px-3 py-2 border-r border-slate-300 focus:outline-none">
-                            <option value="all">All Calibers</option>
-                            <option value="9mm">9mm Luger</option>
-                            <option value="556">5.56 NATO / .223</option>
-                            <option value="22lr">.22 LR Target</option>
-                            <option value="12ga">12 Gauge</option>
-                            <option value="762">7.62x39mm</option>
-                            <option value="45acp">.45 ACP</option>
-                        </select>
-                        <input type="text" id="search-input" placeholder="Search loaders, models, or platforms..." class="flex-grow px-3 py-2 text-xs text-gunpost-textDark focus:outline-none">
+                        <input type="text" id="search-input" placeholder="Search loaders, brands, or models..." class="flex-grow px-3 py-2 text-xs text-gunpost-textDark focus:outline-none">
                         <button id="search-btn" class="bg-gunpost-green hover:bg-gunpost-greenHover text-white px-4 py-2 text-xs font-bold transition-colors">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
@@ -117,12 +108,8 @@
         <nav class="bg-gunpost-slate border-t border-slate-700 text-xs font-medium text-slate-200">
             <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center space-x-1 sm:space-x-6 py-2">
                 <a href="#catalog" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors text-white font-bold">ALL LOADERS</a>
-                <a href="#caliber-finder" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">CALIBER DIRECTORY</a>
                 <a href="#custom-order" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">CUSTOM ORDERS</a>
                 <a href="#shipping-faq" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">SHIPPING &amp; POLICIES</a>
-                <a href="#developer-docs" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors text-yellow-300 font-mono">
-                    <i class="fa-solid fa-code mr-1"></i> DEVELOPER API
-                </a>
             </div>
         </nav>
     </header>
@@ -130,7 +117,7 @@
     <!-- MAIN BODY CONTENT -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
 
-        <!-- FORUM ANNOUNCEMENT / HERO SUMMARY BAR -->
+        <!-- HERO SUMMARY BAR -->
         <div class="bg-white border border-gunpost-border rounded p-5 mb-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="space-y-1">
                 <div class="flex items-center space-x-2">
@@ -146,31 +133,14 @@
             </a>
         </div>
 
-        <!-- CATEGORY & CALIBER FILTER TABS -->
-        <section id="caliber-finder" class="mb-6">
+        <!-- BRAND FILTER TABS (built from Stripe metadata) -->
+        <section id="brand-section" class="mb-6">
             <div class="bg-gunpost-navy text-white px-4 py-2.5 rounded-t font-bold text-xs flex justify-between items-center">
-                <span><i class="fa-solid fa-filter text-gunpost-green mr-2"></i> FILTER BY CALIBER &amp; CATEGORY</span>
-                <span id="active-filter-label" class="text-slate-300 font-normal">Showing All Accessories</span>
+                <span><i class="fa-solid fa-filter text-gunpost-green mr-2"></i> FILTER BY BRAND</span>
+                <span id="active-filter-label" class="text-slate-300 font-normal">Showing All Products</span>
             </div>
-            <div class="bg-white border-x border-b border-gunpost-border p-3 rounded-b flex flex-wrap gap-2 text-xs">
-                <button data-filter="all" class="filter-btn active bg-gunpost-slate text-white font-bold px-3 py-1.5 rounded border border-slate-700">
-                    All Listings
-                </button>
-                <button data-filter="9mm" class="filter-btn bg-slate-100 text-gunpost-textDark hover:bg-slate-200 font-medium px-3 py-1.5 rounded border border-slate-300">
-                    9mm Luger
-                </button>
-                <button data-filter="556" class="filter-btn bg-slate-100 text-gunpost-textDark hover:bg-slate-200 font-medium px-3 py-1.5 rounded border border-slate-300">
-                    5.56 NATO / .223
-                </button>
-                <button data-filter="22lr" class="filter-btn bg-slate-100 text-gunpost-textDark hover:bg-slate-200 font-medium px-3 py-1.5 rounded border border-slate-300">
-                    .22 LR Target
-                </button>
-                <button data-filter="12ga" class="filter-btn bg-slate-100 text-gunpost-textDark hover:bg-slate-200 font-medium px-3 py-1.5 rounded border border-slate-300">
-                    12 Gauge
-                </button>
-                <button data-filter="45acp" class="filter-btn bg-slate-100 text-gunpost-textDark hover:bg-slate-200 font-medium px-3 py-1.5 rounded border border-slate-300">
-                    .45 ACP
-                </button>
+            <div id="brand-filters" class="bg-white border-x border-b border-gunpost-border p-3 rounded-b flex flex-wrap gap-2 text-xs">
+                <!-- Brand buttons are generated from Stripe metadata -->
             </div>
         </section>
 
@@ -191,7 +161,7 @@
             </div>
         </section>
 
-        <!-- CUSTOM BUILDER / GUNCLUB REQUEST FORM -->
+        <!-- CUSTOM BUILDER / CLUB REQUEST FORM -->
         <section id="custom-order" class="mb-10">
             <div class="bg-gunpost-navy text-white px-4 py-2.5 rounded-t font-bold text-xs">
                 <i class="fa-solid fa-screwdriver-wrench text-gunpost-green mr-2"></i> CUSTOM CALIBER &amp; CLUB BULK REQUEST
@@ -245,24 +215,11 @@
             </div>
         </section>
 
-        <!-- DEVELOPER API HANDOFF PANEL -->
-        <section id="developer-docs" class="mb-10">
-            <div class="bg-slate-800 text-white px-4 py-2.5 rounded-t font-mono text-xs flex justify-between items-center">
-                <span><i class="fa-solid fa-code text-yellow-400 mr-2"></i> STRIPE WORKER API ENDPOINT</span>
-                <span class="text-slate-400">machoneloaders.ca/api</span>
-            </div>
-            <div class="bg-slate-900 text-slate-200 p-4 rounded-b text-xs font-mono border-x border-b border-slate-700 overflow-x-auto">
-                <p class="text-slate-400 mb-2">// Cloudflare Worker fetch pipeline active</p>
-                <pre class="text-yellow-300"><code>// Fetching from Cloudflare Worker:
-const WORKER_API_URL = 'https://mach-one-api.jaythedetechtive.workers.dev';</code></pre>
-            </div>
-        </section>
-
     </main>
 
     <!-- SHOPPING CART SLIDE-OUT DRAWER -->
     <div id="cart-drawer-backdrop" class="fixed inset-0 bg-black/50 z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
-    
+
     <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white border-l border-gunpost-border z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between shadow-2xl">
         <!-- Cart Drawer Header -->
         <div class="bg-gunpost-navy text-white p-4 flex items-center justify-between">
@@ -307,7 +264,7 @@ const WORKER_API_URL = 'https://mach-one-api.jaythedetechtive.workers.dev';</cod
     <!-- TOAST NOTIFICATIONS -->
     <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2 pointer-events-none"></div>
 
-    <!-- GUNPOST-STYLE FOOTER -->
+    <!-- FOOTER -->
     <footer class="bg-gunpost-navy text-slate-300 text-xs border-t-2 border-gunpost-green py-8">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
@@ -322,9 +279,7 @@ const WORKER_API_URL = 'https://mach-one-api.jaythedetechtive.workers.dev';</cod
                 <div class="font-bold text-white text-sm mb-2">QUICK LINKS</div>
                 <ul class="space-y-1 text-[11px] text-slate-300">
                     <li><a href="#catalog" class="hover:text-white">All Loaders &amp; Accessories</a></li>
-                    <li><a href="#caliber-finder" class="hover:text-white">Caliber Compatibility List</a></li>
                     <li><a href="#custom-order" class="hover:text-white">Custom Loader Requests</a></li>
-                    <li><a href="#developer-docs" class="hover:text-white">API Integration Docs</a></li>
                 </ul>
             </div>
             <div>
