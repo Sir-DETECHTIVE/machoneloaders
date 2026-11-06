@@ -8,51 +8,14 @@ const WORKER_API_URL = 'https://mach-one-api.jaythedetechtive.workers.dev';
 
 // Global State
 let state = {
-    products: [],        // Live inventory fetched from Cloudflare Worker / Stripe
-    cart: [],            // Local shopping cart state
+    products: [],         // Live inventory fetched from Cloudflare Worker / Stripe
+    cart: [],             // Local shopping cart state
     currentFilter: 'all', // Active caliber tab filter
-    searchQuery: ''      // Active search bar query
+    searchQuery: ''       // Active search bar query
 };
 
 // =================================================================
-// 2. FETCH LIVE CATALOG FROM CLOUDFLARE WORKER// Checkout Button Trigger
-document.getElementById('checkout-btn').addEventListener('click', async () => {
-    if (state.cart.length === 0) {
-        showToast('Please add items to your cart before proceeding', 'info');
-        return;
-    }
-
-    const checkoutBtn = document.getElementById('checkout-btn');
-    checkoutBtn.disabled = true;
-    checkoutBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> CREATING CHECKOUT...';
-
-    showToast('Connecting to secure Stripe Checkout...', 'info');
-
-    try {
-        const response = await fetch(WORKER_API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ items: state.cart })
-        });
-
-        const data = await response.json();
-
-        if (data.url) {
-            // Redirect customer directly to Stripe's hosted checkout page
-            window.location.href = data.url;
-        } else {
-            throw new Error(data.error || 'Failed to initiate checkout session.');
-        }
-    } catch (error) {
-        console.error('Checkout error:', error);
-        showToast('Checkout failed: ' + error.message, 'info');
-        
-        checkoutBtn.disabled = false;
-        checkoutBtn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>PROCEED TO STRIPE CHECKOUT</span>';
-    }
-});
+// 2. FETCH LIVE CATALOG FROM CLOUDFLARE WORKER
 // =================================================================
 async function loadStripeCatalog() {
     const grid = document.getElementById('product-grid');
@@ -335,44 +298,43 @@ document.addEventListener('DOMContentLoaded', () => {
     setupDrawerEvents();
     setupSearchAndFilters();
 
-// Checkout Button Trigger
-document.getElementById('checkout-btn').addEventListener('click', async () => {
-    if (state.cart.length === 0) {
-        showToast('Please add items to your cart before proceeding', 'info');
-        return;
-    }
-
-    const checkoutBtn = document.getElementById('checkout-btn');
-    checkoutBtn.disabled = true;
-    checkoutBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> CREATING CHECKOUT...';
-
-    showToast('Connecting to secure Stripe Checkout...', 'info');
-
-    try {
-        const response = await fetch(WORKER_API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ items: state.cart })
-        });
-
-        const data = await response.json();
-
-        if (data.url) {
-            // Redirect customer directly to Stripe's hosted checkout page
-            window.location.href = data.url;
-        } else {
-            throw new Error(data.error || 'Failed to initiate checkout session.');
+    // Checkout Button Trigger
+    document.getElementById('checkout-btn').addEventListener('click', async () => {
+        if (state.cart.length === 0) {
+            showToast('Please add items to your cart before proceeding', 'info');
+            return;
         }
-    } catch (error) {
-        console.error('Checkout error:', error);
-        showToast('Checkout failed: ' + error.message, 'info');
-        
-        checkoutBtn.disabled = false;
-        checkoutBtn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>PROCEED TO STRIPE CHECKOUT</span>';
-    }
-});
+
+        const checkoutBtn = document.getElementById('checkout-btn');
+        checkoutBtn.disabled = true;
+        checkoutBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> CREATING CHECKOUT...';
+
+        showToast('Connecting to secure Stripe Checkout...', 'info');
+
+        try {
+            const response = await fetch(WORKER_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ items: state.cart })
+            });
+
+            const data = await response.json();
+
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                throw new Error(data.error || 'Failed to initiate checkout session.');
+            }
+        } catch (error) {
+            console.error('Checkout error:', error);
+            showToast('Checkout failed: ' + error.message, 'info');
+            
+            checkoutBtn.disabled = false;
+            checkoutBtn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>PROCEED TO STRIPE CHECKOUT</span>';
+        }
+    });
 
     // Custom Order Form Handler
     document.getElementById('custom-order-form').addEventListener('submit', (e) => {
