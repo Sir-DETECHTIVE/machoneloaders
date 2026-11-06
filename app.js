@@ -229,7 +229,7 @@ function showToast(message, type = 'info') {
     setTimeout(() => {
         toast.classList.add('opacity-0');
         setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    }, 4000);
 }
 
 // =================================================================
@@ -322,10 +322,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
 
+            if (!response.ok) {
+                throw new Error(data.error || `Server returned status ${response.status}`);
+            }
+
             if (data.url) {
                 window.location.href = data.url;
             } else {
-                throw new Error(data.error || 'Failed to initiate checkout session.');
+                throw new Error('No checkout URL returned from server.');
             }
         } catch (error) {
             console.error('Checkout error:', error);
