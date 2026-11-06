@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mach One Loaders | Canadian Firearms Accessories & Speed Loaders</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- System Sans & Roboto Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gunpost: {
+                            navy: '#1b2838',        // Top header dark navy
+                            slate: '#2a475e',       // Sub-header slate blue
+                            bg: '#f4f6f9',          // Clean forum background
+                            card: '#ffffff',        // White content background
+                            border: '#dbe2e8',      // Light grey border
+                            borderDark: '#b8c5d1',  // Darker structural border
+                            green: '#2b5c39',       // Classic GunPost hunter green
+                            greenHover: '#234a2e',  // Darker green action state
+                            accent: '#c0392b',      // Canadian Red / Badge accent
+                            textDark: '#1a232a',    // Charcoal primary text
+                            textMuted: '#5f6d7a'    // Muted grey secondary text
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'Helvetica Neue', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f4f6f9;
+            color: #1a232a;
+        }
+
+        /* GunPost Classic Classified Table & Card Shadows */
+        .gp-card {
+            background-color: #ffffff;
+            border: 1px solid #dbe2e8;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .gp-card:hover {
+            border-color: #2a475e;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Forum category header stripe */
+        .gp-header-bar {
+            background: linear-gradient(180deg, #2a475e 0%, #1b2838 100%);
+        }
+
+        /* Standard scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e9ecef;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b8c5d1;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2a475e;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- TOP CANADIAN NOTICE BANNER -->
+    <div class="bg-gunpost-navy text-white text-xs py-2 px-4 border-b border-slate-700">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center space-x-2 font-medium">
+                <span class="text-sm">🇨🇦</span>
+                <span>PROUDLY MANUFACTURED IN ONTARIO, CANADA</span>
+                <span class="text-slate-400 font-normal">|</span>
+                <span class="text-slate-300 font-normal">Fast Nationwide Postal Delivery</span>
+            </div>
+            <div class="flex items-center space-x-4 text-slate-300 text-[11px]">
+                <span><i class="fa-solid fa-lock text-green-400 mr-1"></i> SSL Encrypted Stripe Checkout</span>
+                <span>machoneloaders.ca</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN GUNPOST-STYLE HEADER -->
+    <header class="bg-gunpost-navy text-white border-b-4 border-gunpost-green">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                
+                <!-- Logo & Title -->
+                <a href="#" class="flex items-center space-x-3 group text-center sm:text-left">
+                    <div class="bg-gunpost-green text-white p-2.5 rounded font-bold text-xl flex items-center justify-center shadow">
+                        <i class="fa-solid fa-gun"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold tracking-tight text-white flex items-center">
+                            MACH ONE LOADERS
+                            <span class="ml-2 text-xs bg-gunpost-accent text-white font-semibold px-2 py-0.5 rounded">CA</span>
+                        </div>
+                        <div class="text-xs text-slate-300 font-normal">
+                            Canadian Speed Loaders &amp; Firearm Accessories Marketplace
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Search Bar & Caliber Dropdown -->
+                <div class="w-full md:w-auto flex-grow max-w-xl">
+                    <div class="flex bg-white rounded overflow-hidden p-0.5 border border-slate-300 shadow-inner">
+                        <select id="search-caliber-select" class="bg-slate-100 text-gunpost-textDark text-xs font-semibold px-3 py-2 border-r border-slate-300 focus:outline-none">
+                            <option value="all">All Calibers</option>
+                            <option value="9mm">9mm Luger</option>
+                            <option value="556">5.56 NATO / .223</option>
+                            <option value="22lr">.22 LR Target</option>
+                            <option value="12ga">12 Gauge</option>
+                            <option value="762">7.62x39mm</option>
+                            <option value="45acp">.45 ACP</option>
+                        </select>
+                        <input type="text" id="search-input" placeholder="Search loaders, models, or platforms..." class="flex-grow px-3 py-2 text-xs text-gunpost-textDark focus:outline-none">
+                        <button id="search-btn" class="bg-gunpost-green hover:bg-gunpost-greenHover text-white px-4 py-2 text-xs font-bold transition-colors">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Shopping Cart Button -->
+                <button id="cart-toggle-btn" class="bg-gunpost-slate hover:bg-slate-700 border border-slate-600 text-white px-4 py-2.5 rounded flex items-center space-x-3 transition-colors shadow-sm">
+                    <i class="fa-solid fa-cart-shopping text-gunpost-green text-sm"></i>
+                    <span class="text-xs font-bold tracking-wide">CART</span>
+                    <span id="cart-counter" class="bg-gunpost-accent text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                </button>
+
+            </div>
+        </div>
+
+        <!-- Horizontal Nav Bar -->
+        <nav class="bg-gunpost-slate border-t border-slate-700 text-xs font-medium text-slate-200">
+            <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center space-x-1 sm:space-x-6 py-2">
+                <a href="#catalog" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors text-white font-bold">ALL LOADERS</a>
+                <a href="#caliber-finder" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">CALIBER DIRECTORY</a>
+                <a href="#custom-order" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">CUSTOM ORDERS</a>
+                <a href="#shipping-faq" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">SHIPPING &amp; POLICIES</a>
+                <a href="#developer-docs" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors text-yellow-300 font-mono">
+                    <i class="fa-solid fa-code mr-1"></i> DEVELOPER API
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN BODY CONTENT -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+
+        <!-- FORUM ANNOUNCEMENT / HERO SUMMARY BAR -->
+        <div class="bg-white border border-gunpost-border rounded p-5 mb-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="space-y-1">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-gunpost-green text-white text-[10px] font-bold px-2 py-0.5 rounded">DIRECT STOREFRONT</span>
+                    <h1 class="text-lg font-bold text-gunpost-textDark">Mach One Magazine Speed Loaders — Canadian Classifieds Format</h1>
+                </div>
+                <p class="text-xs text-gunpost-textMuted max-w-3xl">
+                    High-strength polymer assist loaders engineered for quick reloading without thumb fatigue. Tested across range platforms in Canada. Direct ordering with CAD pricing and Stripe checkout integration.
+                </p>
+            </div>
+            <a href="#catalog" class="bg-gunpost-green hover:bg-gunpost-greenHover text-white font-bold text-xs px-5 py-2.5 rounded transition-colors whitespace-nowrap shadow-sm">
+                BROWSE LISTINGS
+            </a>
+        </div>
+
+        <!-- CATEGORY & CALIBER FILTER TABS (GunPost Style Header) -->
+        <section id="caliber-finder" class="mb-6">
+            <div class="bg-gunpost-navy text-white px-4 py-2.5 rounded-t font-bold text-xs flex justify-between items-center">
+                <span><i class="fa-solid fa-filter text-gunpost-green mr-2"></i> FILTER BY CALIBER &amp; CATEGORY</span>
+                <span id="active-filter-label" class="text-slate-300 font-normal">Showing All Accessories</span>
+            </div>
+            <div class="bg-white border-x border-b border-gunpost-border p-3 rounded-b flex flex-wrap gap-2 text-xs">
+                <button data-filter="all" class="filter-btn active bg-gunpost-slate text-white font-bold px-3 py-1.5 rounded border border-slate-700">
+                    All Listings
+                </button>
+                <button data-filter="9mm" class="filter-btn bg-slate-100 text-gunpost-textDark hover:bg-slate-200 font-medium px-3 py-1.5 rounded border border-slate-300">
+                    9mm Luger
+                </button>
+                <button data-filter="556" class="filter-btn bg-slate-100 text-gunpost-textDark hover:bg-slate-200 font-medium px-3 py-1.5 rounded border border-slate-300">
+                    5.56 NATO / .223
+                </button>
+                <button data-filter="22lr" class="filter-btn bg-slate-100 text-gunpost-textDark hover:bg-slate-200 font-medium px-3 py-1.5 rounded border border-slate-300">
+                    .22 LR Target
+                </button>
+                <button data-filter="12ga" class="filter-btn bg-slate-100 text-gunpost-textDark hover:bg-slate-200 font-medium px-3 py-1.5 rounded border border-slate-300">
+                    12 Gauge
+                </button>
+                <button data-filter="45acp" class="filter-btn bg-slate-100 text-gunpost-textDark hover:bg-slate-200 font-medium px-3 py-1.5 rounded border border-slate-300">
+                    .45 ACP
+                </button>
+            </div>
+        </section>
+
+        <!-- PRODUCT LISTINGS GRID (GUNPOST CARDS) -->
+        <section id="catalog" class="mb-10">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-sm font-bold text-gunpost-textDark uppercase tracking-wider flex items-center">
+                    <i class="fa-solid fa-list-check text-gunpost-green mr-2"></i> AVAILABLE SPEED LOADERS &amp; ACCESSORIES
+                </h2>
+                <div class="text-xs text-gunpost-textMuted">
+                    <span id="product-count" class="font-bold text-gunpost-textDark">0</span> Classified Listings
+                </div>
+            </div>
+
+            <!-- Dynamic Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Javascript will populate listings here -->
+            </div>
+        </section>
+
+        <!-- CUSTOM BUILDER / GUNCLUB REQUEST FORM -->
+        <section id="custom-order" class="mb-10">
+            <div class="bg-gunpost-navy text-white px-4 py-2.5 rounded-t font-bold text-xs">
+                <i class="fa-solid fa-screwdriver-wrench text-gunpost-green mr-2"></i> CUSTOM CALIBER &amp; CLUB BULK REQUEST
+            </div>
+            <div class="bg-white border-x border-b border-gunpost-border p-6 rounded-b">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 space-y-3">
+                        <h3 class="text-base font-bold text-gunpost-textDark">Need a Custom Fit Speed Loader?</h3>
+                        <p class="text-xs text-gunpost-textMuted leading-relaxed">
+                            Have an uncommon firearm, surplus mag, or custom baseplate? Mach One Loaders builds custom loader geometry in our Ontario workshop. Submit your specifications below for custom 3D prototyping.
+                        </p>
+                        <div class="text-xs space-y-2 pt-2">
+                            <div class="flex items-center text-gunpost-green font-medium">
+                                <i class="fa-solid fa-circle-check mr-2"></i> Custom Mag Dimensions Supported
+                            </div>
+                            <div class="flex items-center text-gunpost-green font-medium">
+                                <i class="fa-solid fa-circle-check mr-2"></i> Range Club Bulk Discounts Available
+                            </div>
+                            <div class="flex items-center text-gunpost-green font-medium">
+                                <i class="fa-solid fa-circle-check mr-2"></i> Made &amp; Shipped from Ontario
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7">
+                        <form id="custom-order-form" class="space-y-4 bg-slate-50 p-4 rounded border border-slate-200 text-xs">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block font-bold text-gunpost-textDark mb-1">Firearm Model / Mag Spec</label>
+                                    <input type="text" required placeholder="e.g. SKS / CZ Shadow / Canik TP9" class="w-full bg-white border border-slate-300 p-2 rounded text-gunpost-textDark focus:outline-none focus:border-gunpost-slate">
+                                </div>
+                                <div>
+                                    <label class="block font-bold text-gunpost-textDark mb-1">Caliber</label>
+                                    <input type="text" required placeholder="e.g. 9mm / 7.62x39 / .308" class="w-full bg-white border border-slate-300 p-2 rounded text-gunpost-textDark focus:outline-none focus:border-gunpost-slate">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block font-bold text-gunpost-textDark mb-1">Contact Email</label>
+                                <input type="email" required placeholder="your.name@example.ca" class="w-full bg-white border border-slate-300 p-2 rounded text-gunpost-textDark focus:outline-none focus:border-gunpost-slate">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-gunpost-textDark mb-1">Special Notes / Baseplate Type</label>
+                                <textarea rows="3" placeholder="Specify if using extended basepads or custom springs..." class="w-full bg-white border border-slate-300 p-2 rounded text-gunpost-textDark focus:outline-none focus:border-gunpost-slate"></textarea>
+                            </div>
+                            <button type="submit" class="bg-gunpost-green hover:bg-gunpost-greenHover text-white font-bold text-xs px-5 py-2.5 rounded transition-colors w-full">
+                                SUBMIT CUSTOM REQUEST
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEVELOPER API HANDOFF PANEL -->
+        <section id="developer-docs" class="mb-10">
+            <div class="bg-slate-800 text-white px-4 py-2.5 rounded-t font-mono text-xs flex justify-between items-center">
+                <span><i class="fa-solid fa-code text-yellow-400 mr-2"></i> STRIPE BACKEND API HANDOFF CONFIGURATION</span>
+                <span class="text-slate-400">machoneloaders.ca/api</span>
+            </div>
+            <div class="bg-slate-900 text-slate-200 p-4 rounded-b text-xs font-mono border-x border-b border-slate-700 overflow-x-auto">
+                <p class="text-slate-400 mb-2">// Developer Friend: Plug your Stripe API endpoints directly into these handler methods.</p>
+                <pre class="text-yellow-300"><code>// File Integration: index.html -> MachOneAPI
+const MachOneAPI = {
+    // 1. Trigger Stripe Checkout Session from Cart
+    async initiateCheckout(cartItems) {
+        const response = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: cartItems })
+        });
+        const session = await response.json();
+        window.location.href = session.url; // Stripe hosted redirect
+    }
+};</code></pre>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SHOPPING CART SLIDE-OUT DRAWER -->
+    <div id="cart-drawer-backdrop" class="fixed inset-0 bg-black/50 z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white border-l border-gunpost-border z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between shadow-2xl">
+        <!-- Cart Drawer Header -->
+        <div class="bg-gunpost-navy text-white p-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2 font-bold text-xs">
+                <i class="fa-solid fa-cart-shopping text-gunpost-green"></i>
+                <span>YOUR CART</span>
+            </div>
+            <button id="cart-close-btn" class="text-slate-300 hover:text-white p-1">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items Container -->
+        <div id="cart-items-container" class="flex-grow p-4 overflow-y-auto space-y-3">
+            <!-- Dynamic Cart Items Rendered Here -->
+        </div>
+
+        <!-- Cart Summary Footer -->
+        <div class="p-4 border-t border-gunpost-border bg-slate-50 space-y-3">
+            <div class="space-y-1 text-xs">
+                <div class="flex justify-between text-gunpost-textMuted">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal" class="font-bold text-gunpost-textDark">$0.00 CAD</span>
+                </div>
+                <div class="flex justify-between text-gunpost-textMuted">
+                    <span>Estimated Shipping</span>
+                    <span class="text-gunpost-green font-medium">Calculated at Checkout</span>
+                </div>
+                <div class="flex justify-between text-sm font-bold text-gunpost-textDark pt-2 border-t border-slate-200">
+                    <span>Total (CAD)</span>
+                    <span id="cart-total" class="text-gunpost-green text-base">$0.00 CAD</span>
+                </div>
+            </div>
+
+            <button id="checkout-btn" class="w-full bg-gunpost-green hover:bg-gunpost-greenHover text-white font-bold text-xs py-3 rounded transition-colors flex items-center justify-center space-x-2 shadow">
+                <i class="fa-solid fa-lock"></i>
+                <span>PROCEED TO STRIPE CHECKOUT</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- GUNPOST-STYLE FOOTER -->
+    <footer class="bg-gunpost-navy text-slate-300 text-xs border-t-2 border-gunpost-green py-8">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <div class="font-bold text-white text-sm mb-2 flex items-center">
+                    <i class="fa-solid fa-shield text-gunpost-green mr-2"></i> MACH ONE LOADERS
+                </div>
+                <p class="text-slate-400 text-[11px] leading-relaxed">
+                    Precision magazine loaders engineered for range convenience and long-lasting durability. Manufactured and distributed in Ontario, Canada.
+                </p>
+            </div>
+            <div>
+                <div class="font-bold text-white text-sm mb-2">QUICK LINKS</div>
+                <ul class="space-y-1 text-[11px] text-slate-300">
+                    <li><a href="#catalog" class="hover:text-white">All Loaders &amp; Accessories</a></li>
+                    <li><a href="#caliber-finder" class="hover:text-white">Caliber Compatibility List</a></li>
+                    <li><a href="#custom-order" class="hover:text-white">Custom Loader Requests</a></li>
+                    <li><a href="#developer-docs" class="hover:text-white">API Integration Docs</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="font-bold text-white text-sm mb-2">STORE INFORMATION</div>
+                <div class="text-[11px] space-y-1 text-slate-300">
+                    <p><i class="fa-solid fa-globe text-slate-400 w-4"></i> machoneloaders.ca</p>
+                    <p><i class="fa-solid fa-envelope text-slate-400 w-4"></i> sales@machoneloaders.ca</p>
+                    <p><i class="fa-solid fa-truck text-slate-400 w-4"></i> Canada-Wide Tracked Shipping</p>
+                    <p><i class="fa-solid fa-shield-halved text-slate-400 w-4"></i> Lifetime Material Guarantee</p>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 pt-6 mt-6 border-t border-slate-700 text-center text-[10px] text-slate-400">
+            &copy; 2026 Mach One Loaders (machoneloaders.ca). All Rights Reserved. Canadian Firearms Accessory Retailer.
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ==========================================
+        // 1. PRODUCT CATALOG DATA (GunPost Listings)
+        // ==========================================
+        const PRODUCTS = [
+            {
+                id: 'm1-9mm-pro',
+                name: 'MachOne Pro 9mm Speed Loader',
+                caliber: '9mm',
+                platform: 'Pistol',
+                compatibility: 'Glock, CZ, Sig Sauer, S&W, Canik',
+                price: 29.99,
+                condition: 'Brand New',
+                location: 'Ontario, CA',
+                badge: 'TOP SELLER',
+                description: 'Universal double-stack 9mm speed loader. Reduces reload thumb pressure on high-capacity range magazines.'
+            },
+            {
+                id: 'm1-556-bench',
+                name: 'MachOne AR-15 / 5.56 Speed Loader Bench Block',
+                caliber: '556',
+                platform: 'Rifle',
+                compatibility: 'STANAG 5.56 NATO / .223 Rem Mags',
+                price: 34.99,
+                condition: 'Brand New',
+                location: 'Ontario, CA',
+                badge: 'RANGE GRADE',
+                description: 'Heavy duty bench loading block for standard 5.56/.223 magazines. Fast push stroke design.'
+            },
+            {
+                id: 'm1-22-rimfire',
+                name: 'MachOne Universal .22LR Magazine Loader',
+                caliber: '22lr',
+                platform: 'Target Pistol / Rifle',
+                compatibility: 'Ruger Mark IV, 10/22, GSG, Browning',
+                price: 24.99,
+                condition: 'Brand New',
+                location: 'Ontario, CA',
+                badge: 'POPULAR',
+                description: 'Smooth rimfire loader for high-volume target practice. Eliminates sharp feed-lip thumb wear.'
+            },
+            {
+                id: 'm1-12ga-fasttube',
+                name: 'MachOne Shotgun Shell Fast-Tube Loader (12GA)',
+                caliber: '12ga',
+                platform: 'Shotgun',
+                compatibility: 'Standard 12 Gauge Shells & Tubes',
+                price: 39.99,
+                condition: 'Brand New',
+                location: 'Ontario, CA',
+                badge: 'NEW RELEASE',
+                description: 'Quad-load assist for competitive 3-Gun and clay target shooting enthusiasts.'
+            },
+            {
+                id: 'm1-45-acp-heavy',
+                name: 'MachOne .45 ACP Heavy Loader',
+                caliber: '45acp',
+                platform: 'Pistol',
+                compatibility: '1911 Single Stack & Double Stack .45s',
+                price: 29.99,
+                condition: 'Brand New',
+                location: 'Ontario, CA',
+                badge: 'HEAVY DUTY',
+                description: 'Reinforced polymer walls specifically built for high tension .45 ACP magazine springs.'
+            },
+            {
+                id: 'm1-custom-bench',
+                name: 'MachOne Custom Caliber Loader (Built to Order)',
+                caliber: 'custom',
+                platform: 'Custom Spec',
+                compatibility: 'Built to customer magazine drawings',
+                price: 44.99,
+                condition: 'Custom Spec',
+                location: 'Ontario, CA',
+                badge: 'CUSTOM WORK',
+                description: 'Custom 3D engineered magazine assist for rare military surplus or competition basepads.'
+            }
+        ];
+
+        // State Management
+        let state = {
+            cart: [],
+            currentFilter: 'all',
+            searchQuery: ''
+        };
+
+        // ==========================================
+        // 2. BACKEND STRIPE API HOOK (DEVELOPER FRIEND)
+        // ==========================================
+        const MachOneAPI = {
+            async initiateCheckout(cartItems) {
+                console.log('[Stripe API] Triggering Checkout Payload:', cartItems);
+                showToast('Connecting to secure Stripe Checkout gateway...', 'info');
+
+                /*
+                  DEVELOPER FRIEND UNCOMMENT BLOCK:
+                  ================================
+                  const response = await fetch('/api/create-checkout-session', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ items: cartItems })
+                  });
+                  const session = await response.json();
+                  window.location.href = session.url;
+                */
+            }
+        };
+
+        // ==========================================
+        // 3. UI RENDERING FUNCTIONS
+        // ==========================================
+        function renderCatalog() {
+            const grid = document.getElementById('product-grid');
+            const selectCaliber = document.getElementById('search-caliber-select').value;
+            
+            let filtered = PRODUCTS;
+
+            // Apply caliber filter tab or dropdown
+            const filterToApply = state.currentFilter !== 'all' ? state.currentFilter : selectCaliber;
+            if (filterToApply !== 'all') {
+                filtered = filtered.filter(p => p.caliber === filterToApply);
+            }
+
+            // Apply search query
+            if (state.searchQuery.trim() !== '') {
+                const query = state.searchQuery.toLowerCase();
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(query) || 
+                    p.compatibility.toLowerCase().includes(query) ||
+                    p.platform.toLowerCase().includes(query)
+                );
+            }
+
+            document.getElementById('product-count').textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-white border border-gunpost-border p-8 text-center rounded">
+                        <i class="fa-solid fa-magnifying-glass text-slate-300 text-3xl mb-2"></i>
+                        <div class="text-sm font-bold text-gunpost-textDark">No Loaders Matching Criteria</div>
+                        <div class="text-xs text-gunpost-textMuted mt-1">Try clearing your caliber search or submit a custom loader request.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="gp-card p-4 rounded flex flex-col justify-between transition-all">
+                    <div>
+                        <!-- Header Badges -->
+                        <div class="flex justify-between items-center mb-2 pb-2 border-b border-slate-100 text-[11px]">
+                            <span class="bg-gunpost-slate text-white px-2 py-0.5 rounded font-bold">${item.badge}</span>
+                            <span class="text-gunpost-green font-semibold"><i class="fa-solid fa-circle text-[8px] mr-1"></i> In Stock</span>
+                        </div>
+
+                        <!-- Listing Title -->
+                        <h3 class="text-sm font-bold text-gunpost-textDark hover:text-gunpost-slate transition-colors mb-1">
+                            ${item.name}
+                        </h3>
+
+                        <!-- Price Tag -->
+                        <div class="text-base font-bold text-gunpost-green mb-2">
+                            $${item.price.toFixed(2)} <span class="text-xs text-slate-500 font-normal">CAD</span>
+                        </div>
+
+                        <!-- Listing Info Table -->
+                        <div class="bg-slate-50 border border-slate-200 rounded p-2 text-[11px] space-y-1 mb-3">
+                            <div class="flex justify-between"><span class="text-slate-500">Caliber:</span> <span class="font-semibold text-gunpost-textDark uppercase">${item.caliber}</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Platform:</span> <span class="font-semibold text-gunpost-textDark">${item.platform}</span></div>
+                            <div class="flex justify-between truncate"><span class="text-slate-500">Fits:</span> <span class="font-semibold text-gunpost-textDark truncate ml-2">${item.compatibility}</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Location:</span> <span class="text-slate-700">${item.location}</span></div>
+                        </div>
+
+                        <p class="text-xs text-gunpost-textMuted mb-4 leading-relaxed">${item.description}</p>
+                    </div>
+
+                    <!-- Card Actions -->
+                    <div class="pt-2 border-t border-slate-100 flex gap-2">
+                        <button onclick="addToCart('${item.id}')" class="flex-grow bg-gunpost-green hover:bg-gunpost-greenHover text-white font-bold text-xs py-2 px-3 rounded transition-colors flex items-center justify-center space-x-1">
+                            <i class="fa-solid fa-cart-plus text-xs"></i>
+                            <span>ADD TO CART</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items-container');
+            const counter = document.getElementById('cart-counter');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+
+            const totalCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            counter.textContent = totalCount;
+            subtotalEl.textContent = `$${subtotal.toFixed(2)} CAD`;
+            totalEl.textContent = `$${subtotal.toFixed(2)} CAD`;
+
+            if (state.cart.length === 0) {
+                container.innerHTML = `
+                    <div class="h-64 flex flex-col items-center justify-center text-center p-4">
+                        <i class="fa-solid fa-cart-flatbed text-slate-300 text-4xl mb-2"></i>
+                        <div class="text-xs font-bold text-gunpost-textDark">Your Cart is Empty</div>
+                        <div class="text-[11px] text-slate-400 mt-1">Select speed loaders from the classifieds list to add.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = state.cart.map(item => `
+                <div class="bg-slate-50 border border-slate-200 p-3 rounded flex items-center justify-between text-xs">
+                    <div class="flex-grow pr-2">
+                        <div class="font-bold text-gunpost-textDark">${item.name}</div>
+                        <div class="text-gunpost-green font-bold mt-0.5">$${item.price.toFixed(2)} CAD</div>
+                        <div class="flex items-center space-x-2 mt-2">
+                            <button onclick="updateQuantity('${item.id}', -1)" class="w-5 h-5 bg-white border border-slate-300 rounded text-slate-700 font-bold flex items-center justify-center hover:bg-slate-100">-</button>
+                            <span class="font-bold text-gunpost-textDark">${item.quantity}</span>
+                            <button onclick="updateQuantity('${item.id}', 1)" class="w-5 h-5 bg-white border border-slate-300 rounded text-slate-700 font-bold flex items-center justify-center hover:bg-slate-100">+</button>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart('${item.id}')" class="text-slate-400 hover:text-red-600 p-1">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // ==========================================
+        // 4. CART & INTERACTION HANDLERS
+        // ==========================================
+        function addToCart(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = state.cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity++;
+            } else {
+                state.cart.push({ ...product, quantity: 1 });
+            }
+
+            renderCart();
+            showToast(`Added ${product.name} to cart`, 'success');
+        }
+
+        function updateQuantity(productId, delta) {
+            const item = state.cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                removeFromCart(productId);
+            } else {
+                renderCart();
+            }
+        }
+
+        function removeFromCart(productId) {
+            state.cart = state.cart.filter(i => i.id !== productId);
+            renderCart();
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            toast.className = `pointer-events-auto bg-gunpost-navy text-white border-l-4 border-gunpost-green px-4 py-2.5 text-xs font-medium shadow-lg flex items-center space-x-2 transition-all transform translate-y-2 opacity-0`;
+            toast.innerHTML = `
+                <i class="fa-solid ${type === 'success' ? 'fa-circle-check text-green-400' : 'fa-circle-info text-blue-400'}"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Setup Cart Drawer Actions
+        function setupDrawerEvents() {
+            const drawer = document.getElementById('cart-drawer');
+            const backdrop = document.getElementById('cart-drawer-backdrop');
+            const openBtn = document.getElementById('cart-toggle-btn');
+            const closeBtn = document.getElementById('cart-close-btn');
+
+            function openCart() {
+                drawer.classList.remove('translate-x-full');
+                backdrop.classList.remove('opacity-0', 'pointer-events-none');
+            }
+
+            function closeCart() {
+                drawer.classList.add('translate-x-full');
+                backdrop.classList.add('opacity-0', 'pointer-events-none');
+            }
+
+            openBtn.addEventListener('click', openCart);
+            closeBtn.addEventListener('click', closeCart);
+            backdrop.addEventListener('click', closeCart);
+        }
+
+        // Setup Caliber Tabs and Search Bar
+        function setupSearchAndFilters() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const activeLabel = document.getElementById('active-filter-label');
+
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => {
+                        b.classList.remove('bg-gunpost-slate', 'text-white', 'border-slate-700', 'font-bold');
+                        b.classList.add('bg-slate-100', 'text-gunpost-textDark', 'border-slate-300', 'font-medium');
+                    });
+
+                    btn.classList.remove('bg-slate-100', 'text-gunpost-textDark', 'border-slate-300', 'font-medium');
+                    btn.classList.add('bg-gunpost-slate', 'text-white', 'border-slate-700', 'font-bold');
+
+                    state.currentFilter = btn.dataset.filter;
+                    activeLabel.textContent = state.currentFilter === 'all' 
+                        ? 'Showing All Accessories' 
+                        : `Filtered by: ${state.currentFilter.toUpperCase()}`;
+                    
+                    renderCatalog();
+                });
+            });
+
+            // Search Bar Input Event
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                state.searchQuery = e.target.value;
+                renderCatalog();
+            });
+
+            // Dropdown Caliber Select Event
+            document.getElementById('search-caliber-select').addEventListener('change', () => {
+                renderCatalog();
+            });
+        }
+
+        // ==========================================
+        // 5. INITIALIZATION
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCatalog();
+            renderCart();
+            setupDrawerEvents();
+            setupSearchAndFilters();
+
+            // Checkout Event
+            document.getElementById('checkout-btn').addEventListener('click', () => {
+                if (state.cart.length === 0) {
+                    showToast('Please add items to cart before proceeding', 'info');
+                    return;
+                }
+                MachOneAPI.initiateCheckout(state.cart);
+            });
+
+            // Form Submit Event
+            document.getElementById('custom-order-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showToast('Custom loader request submitted successfully!', 'success');
+                e.target.reset();
+            });
+        });
+    </script>
+</body>
+</html>
