@@ -19,6 +19,7 @@ let state = {
 // =================================================================
 async function loadStripeCatalog() {
     const grid = document.getElementById('product-grid');
+    if (!grid) return;
     
     // Show Classifieds loading state
     grid.innerHTML = `
@@ -54,7 +55,8 @@ async function loadStripeCatalog() {
 // =================================================================
 function renderCatalog() {
     const grid = document.getElementById('product-grid');
-    const selectCaliber = document.getElementById('search-caliber-select').value;
+    const selectCaliberEl = document.getElementById('search-caliber-select');
+    const selectCaliber = selectCaliberEl ? selectCaliberEl.value : 'all';
     
     let filtered = state.products;
 
@@ -68,6 +70,10 @@ function renderCatalog() {
     }
 
     // Apply Text Search Filter
+    const searchInputEl = document.getElementById('search-input');
+    if (searchInputEl && searchInputEl.value.trim() !== '') {
+        state.searchQuery = searchInputEl.value;
+    }
     if (state.searchQuery.trim() !== '') {
         const query = state.searchQuery.toLowerCase();
         filtered = filtered.filter(p => 
@@ -79,7 +85,10 @@ function renderCatalog() {
     }
 
     // Update Product Count Counter
-    document.getElementById('product-count').textContent = filtered.length;
+    const productCountEl = document.getElementById('product-count');
+    if (productCountEl) {
+        productCountEl.textContent = filtered.length;
+    }
 
     // Empty state
     if (filtered.length === 0) {
@@ -145,12 +154,14 @@ function renderCart() {
     const subtotalEl = document.getElementById('cart-subtotal');
     const totalEl = document.getElementById('cart-total');
 
+    if (!container) return;
+
     const totalCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
     const subtotal = state.cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
 
-    counter.textContent = totalCount;
-    subtotalEl.textContent = `$${subtotal.toFixed(2)} CAD`;
-    totalEl.textContent = `$${subtotal.toFixed(2)} CAD`;
+    if (counter) counter.textContent = totalCount;
+    if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)} CAD`;
+    if (totalEl) totalEl.textContent = `$${subtotal.toFixed(2)} CAD`;
 
     if (state.cart.length === 0) {
         container.innerHTML = `
@@ -215,8 +226,9 @@ function removeFromCart(productId) {
 
 function showToast(message, type = 'info') {
     const container = document.getElementById('toast-container');
-    const toast = document.createElement('div');
+    if (!container) return;
     
+    const toast = document.createElement('div');
     toast.className = `pointer-events-auto bg-gunpost-navy text-white border-l-4 border-gunpost-green px-4 py-2.5 text-xs font-medium shadow-lg flex items-center space-x-2 transition-all transform translate-y-2 opacity-0`;
     toast.innerHTML = `
         <i class="fa-solid ${type === 'success' ? 'fa-circle-check text-green-400' : 'fa-circle-info text-blue-400'}"></i>
@@ -241,19 +253,21 @@ function setupDrawerEvents() {
     const openBtn = document.getElementById('cart-toggle-btn');
     const closeBtn = document.getElementById('cart-close-btn');
 
+    if (!drawer || !openBtn) return;
+
     function openCart() {
         drawer.classList.remove('translate-x-full');
-        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        if (backdrop) backdrop.classList.remove('opacity-0', 'pointer-events-none');
     }
 
     function closeCart() {
         drawer.classList.add('translate-x-full');
-        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        if (backdrop) backdrop.classList.add('opacity-0', 'pointer-events-none');
     }
 
     openBtn.addEventListener('click', openCart);
-    closeBtn.addEventListener('click', closeCart);
-    backdrop.addEventListener('click', closeCart);
+    if (closeBtn) closeBtn.addEventListener('click', closeCart);
+    if (backdrop) backdrop.addEventListener('click', closeCart);
 }
 
 function setupSearchAndFilters() {
@@ -271,24 +285,30 @@ function setupSearchAndFilters() {
             btn.classList.add('bg-gunpost-slate', 'text-white', 'border-slate-700', 'font-bold');
 
             state.currentFilter = btn.dataset.filter;
-            activeLabel.textContent = state.currentFilter === 'all' 
-                ? 'Showing All Accessories' 
-                : `Filtered by: ${state.currentFilter.toUpperCase()}`;
+            if (activeLabel) {
+                activeLabel.textContent = state.currentFilter === 'all' 
+                    ? 'Showing All Accessories' 
+                    : `Filtered by: ${state.currentFilter.toUpperCase()}`;
+            }
             
             renderCatalog();
         });
     });
 
-    // Search Bar Input Event
-    document.getElementById('search-input').addEventListener('input', (e) => {
-        state.searchQuery = e.target.value;
-        renderCatalog();
-    });
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            state.searchQuery = e.target.value;
+            renderCatalog();
+        });
+    }
 
-    // Dropdown Caliber Select Event
-    document.getElementById('search-caliber-select').addEventListener('change', () => {
-        renderCatalog();
-    });
+    const caliberSelect = document.getElementById('search-caliber-select');
+    if (caliberSelect) {
+        caliberSelect.addEventListener('change', () => {
+            renderCatalog();
+        });
+    }
 }
 
 // Initialize application on DOM ready
@@ -299,51 +319,56 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSearchAndFilters();
 
     // Checkout Button Trigger
-    document.getElementById('checkout-btn').addEventListener('click', async () => {
-        if (state.cart.length === 0) {
-            showToast('Please add items to your cart before proceeding', 'info');
-            return;
-        }
-
-        const checkoutBtn = document.getElementById('checkout-btn');
-        checkoutBtn.disabled = true;
-        checkoutBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> CREATING CHECKOUT...';
-
-        showToast('Connecting to secure Stripe Checkout...', 'info');
-
-        try {
-            const response = await fetch(WORKER_API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ items: state.cart })
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error || `Server returned status ${response.status}`);
+    const checkoutBtn = document.getElementById('checkout-btn');
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', async () => {
+            if (state.cart.length === 0) {
+                showToast('Please add items to your cart before proceeding', 'info');
+                return;
             }
 
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                throw new Error('No checkout URL returned from server.');
+            checkoutBtn.disabled = true;
+            checkoutBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> CREATING CHECKOUT...';
+
+            showToast('Connecting to secure Stripe Checkout...', 'info');
+
+            try {
+                const response = await fetch(WORKER_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ items: state.cart })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || `Server returned status ${response.status}`);
+                }
+
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('No checkout URL returned from server.');
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                showToast('Checkout failed: ' + error.message, 'info');
+                
+                checkoutBtn.disabled = false;
+                checkoutBtn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>PROCEED TO STRIPE CHECKOUT</span>';
             }
-        } catch (error) {
-            console.error('Checkout error:', error);
-            showToast('Checkout failed: ' + error.message, 'info');
-            
-            checkoutBtn.disabled = false;
-            checkoutBtn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>PROCEED TO STRIPE CHECKOUT</span>';
-        }
-    });
+        });
+    }
 
     // Custom Order Form Handler
-    document.getElementById('custom-order-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        showToast('Custom loader request submitted successfully!', 'success');
-        e.target.reset();
-    });
+    const customOrderForm = document.getElementById('custom-order-form');
+    if (customOrderForm) {
+        customOrderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast('Custom loader request submitted successfully!', 'success');
+            e.target.reset();
+        });
+    }
 });
