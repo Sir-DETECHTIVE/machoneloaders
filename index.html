@@ -8,12 +8,38 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
+    <!-- Tailwind Custom Theme Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gunpost: {
+                            navy: '#1b2838',
+                            slate: '#2a475e',
+                            bg: '#f4f6f9',
+                            card: '#ffffff',
+                            border: '#dbe2e8',
+                            borderDark: '#b8c5d1',
+                            green: '#2b5c39',
+                            greenHover: '#234a2e',
+                            accent: '#c0392b',
+                            textDark: '#1a232a',
+                            textMuted: '#5f6d7a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'Helvetica Neue', 'Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- External Custom Stylesheet -->
