@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mach One Loaders | Canadian Firearms Accessories & Speed Loaders</title>
+    <title>Mach One Loaders | Canadian Speed Loaders &amp; Firearm Accessories</title>
+    <meta name="description" content="Canadian-made magazine speed loaders and firearm accessories. Ordered in CAD with secure Stripe checkout.">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,7 +46,7 @@
     <!-- External Custom Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col justify-between">
+<body class="font-sans antialiased min-h-screen flex flex-col">
 
     <!-- TOP CANADIAN NOTICE BANNER -->
     <div class="bg-gunpost-navy text-white text-xs py-2 px-4 border-b border-slate-700">
@@ -69,7 +70,7 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-4">
 
                 <!-- Logo & Title -->
-                <a href="#" class="flex items-center space-x-3 group text-center sm:text-left">
+                <a href="#home" class="flex items-center space-x-3 group text-center sm:text-left">
                     <div class="bg-gunpost-green text-white p-2.5 rounded font-bold text-xl flex items-center justify-center shadow">
                         <i class="fa-solid fa-gun"></i>
                     </div>
@@ -79,20 +80,20 @@
                             <span class="ml-2 text-xs bg-gunpost-accent text-white font-semibold px-2 py-0.5 rounded">CA</span>
                         </div>
                         <div class="text-xs text-slate-300 font-normal">
-                            Canadian Speed Loaders &amp; Firearm Accessories Marketplace
+                            Canadian Speed Loaders &amp; Firearm Accessories
                         </div>
                     </div>
                 </a>
 
-                <!-- Search Bar -->
-                <div class="w-full md:w-auto flex-grow max-w-xl">
+                <!-- Header Search (opens the catalog with this search) -->
+                <form id="header-search" class="w-full md:w-auto flex-grow max-w-xl">
                     <div class="flex bg-white rounded overflow-hidden p-0.5 border border-slate-300 shadow-inner">
-                        <input type="text" id="search-input" placeholder="Search loaders, brands, or models..." class="flex-grow px-3 py-2 text-xs text-gunpost-textDark focus:outline-none">
-                        <button id="search-btn" class="bg-gunpost-green hover:bg-gunpost-greenHover text-white px-4 py-2 text-xs font-bold transition-colors">
+                        <input type="text" id="header-search-input" placeholder="Search loaders, brands, or models..." class="flex-grow px-3 py-2 text-xs text-gunpost-textDark focus:outline-none">
+                        <button type="submit" class="bg-gunpost-green hover:bg-gunpost-greenHover text-white px-4 py-2 text-xs font-bold transition-colors" aria-label="Search">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
-                </div>
+                </form>
 
                 <!-- Shopping Cart Button -->
                 <button id="cart-toggle-btn" class="bg-gunpost-slate hover:bg-slate-700 border border-slate-600 text-white px-4 py-2.5 rounded flex items-center space-x-3 transition-colors shadow-sm">
@@ -106,136 +107,50 @@
 
         <!-- Horizontal Nav Bar -->
         <nav class="bg-gunpost-slate border-t border-slate-700 text-xs font-medium text-slate-200">
-            <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center space-x-1 sm:space-x-6 py-2">
-                <a href="#catalog" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors text-white font-bold">ALL LOADERS</a>
-                <a href="#custom-order" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">CUSTOM ORDERS</a>
-                <a href="#shipping-faq" class="hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">SHIPPING &amp; POLICIES</a>
+            <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center gap-1 sm:gap-4 py-2">
+                <a data-nav="home" href="#home" class="nav-link hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">HOME</a>
+                <a data-nav="catalog" href="#catalog" class="nav-link hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">CATALOG</a>
+                <a data-nav="finder" href="#finder" class="nav-link hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">MODEL FINDER</a>
+                <a data-nav="instructions" href="#instructions" class="nav-link hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">PRODUCT INSTRUCTIONS</a>
+                <a data-nav="bulk" href="#bulk" class="nav-link hover:bg-gunpost-navy px-3 py-1.5 rounded transition-colors">BULK ORDERS</a>
             </div>
         </nav>
     </header>
 
-    <!-- MAIN BODY CONTENT -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
-
-        <!-- HERO SUMMARY BAR -->
-        <div class="bg-white border border-gunpost-border rounded p-5 mb-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="space-y-1">
-                <div class="flex items-center space-x-2">
-                    <span class="bg-gunpost-green text-white text-[10px] font-bold px-2 py-0.5 rounded">DIRECT STOREFRONT</span>
-                    <h1 class="text-lg font-bold text-gunpost-textDark">Mach One Magazine Speed Loaders — Canadian Classifieds Format</h1>
-                </div>
-                <p class="text-xs text-gunpost-textMuted max-w-3xl">
-                    High-strength polymer assist loaders engineered for quick reloading without thumb fatigue. Tested across range platforms in Canada. Direct ordering with CAD pricing and Stripe checkout integration.
-                </p>
-            </div>
-            <a href="#catalog" class="bg-gunpost-green hover:bg-gunpost-greenHover text-white font-bold text-xs px-5 py-2.5 rounded transition-colors whitespace-nowrap shadow-sm">
-                BROWSE LISTINGS
-            </a>
+    <!-- PAGE CONTENT (rendered by app.js) -->
+    <main id="page" class="flex-grow w-full max-w-7xl mx-auto px-4 py-6">
+        <div class="bg-white border border-gunpost-border p-8 text-center rounded">
+            <i class="fa-solid fa-spinner fa-spin text-gunpost-slate text-3xl mb-2"></i>
+            <div class="text-sm font-bold text-gunpost-textDark">Loading...</div>
         </div>
-
-        <!-- BRAND FILTER TABS (built from Stripe metadata) -->
-        <section id="brand-section" class="mb-6">
-            <div class="bg-gunpost-navy text-white px-4 py-2.5 rounded-t font-bold text-xs flex justify-between items-center">
-                <span><i class="fa-solid fa-filter text-gunpost-green mr-2"></i> FILTER BY BRAND</span>
-                <span id="active-filter-label" class="text-slate-300 font-normal">Showing All Products</span>
-            </div>
-            <div id="brand-filters" class="bg-white border-x border-b border-gunpost-border p-3 rounded-b flex flex-wrap gap-2 text-xs">
-                <!-- Brand buttons are generated from Stripe metadata -->
-            </div>
-        </section>
-
-        <!-- PRODUCT LISTINGS GRID -->
-        <section id="catalog" class="mb-10">
-            <div class="flex justify-between items-center mb-3">
-                <h2 class="text-sm font-bold text-gunpost-textDark uppercase tracking-wider flex items-center">
-                    <i class="fa-solid fa-list-check text-gunpost-green mr-2"></i> AVAILABLE SPEED LOADERS &amp; ACCESSORIES
-                </h2>
-                <div class="text-xs text-gunpost-textMuted">
-                    <span id="product-count" class="font-bold text-gunpost-textDark">0</span> Classified Listings
-                </div>
-            </div>
-
-            <!-- Dynamic Product Grid -->
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <!-- Javascript populates live Stripe inventory here -->
-            </div>
-        </section>
-
-        <!-- CUSTOM BUILDER / CLUB REQUEST FORM -->
-        <section id="custom-order" class="mb-10">
-            <div class="bg-gunpost-navy text-white px-4 py-2.5 rounded-t font-bold text-xs">
-                <i class="fa-solid fa-screwdriver-wrench text-gunpost-green mr-2"></i> CUSTOM CALIBER &amp; CLUB BULK REQUEST
-            </div>
-            <div class="bg-white border-x border-b border-gunpost-border p-6 rounded-b">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div class="lg:col-span-5 space-y-3">
-                        <h3 class="text-base font-bold text-gunpost-textDark">Need a Custom Fit Speed Loader?</h3>
-                        <p class="text-xs text-gunpost-textMuted leading-relaxed">
-                            Have an uncommon firearm, surplus mag, or custom baseplate? Mach One Loaders builds custom loader geometry in our Ontario workshop. Submit your specifications below for custom 3D prototyping.
-                        </p>
-                        <div class="text-xs space-y-2 pt-2">
-                            <div class="flex items-center text-gunpost-green font-medium">
-                                <i class="fa-solid fa-circle-check mr-2"></i> Custom Mag Dimensions Supported
-                            </div>
-                            <div class="flex items-center text-gunpost-green font-medium">
-                                <i class="fa-solid fa-circle-check mr-2"></i> Range Club Bulk Discounts Available
-                            </div>
-                            <div class="flex items-center text-gunpost-green font-medium">
-                                <i class="fa-solid fa-circle-check mr-2"></i> Made &amp; Shipped from Ontario
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-7">
-                        <form id="custom-order-form" class="space-y-4 bg-slate-50 p-4 rounded border border-slate-200 text-xs">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block font-bold text-gunpost-textDark mb-1">Firearm Model / Mag Spec</label>
-                                    <input type="text" required placeholder="e.g. SKS / CZ Shadow / Canik TP9" class="w-full bg-white border border-slate-300 p-2 rounded text-gunpost-textDark focus:outline-none focus:border-gunpost-slate">
-                                </div>
-                                <div>
-                                    <label class="block font-bold text-gunpost-textDark mb-1">Caliber</label>
-                                    <input type="text" required placeholder="e.g. 9mm / 7.62x39 / .308" class="w-full bg-white border border-slate-300 p-2 rounded text-gunpost-textDark focus:outline-none focus:border-gunpost-slate">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block font-bold text-gunpost-textDark mb-1">Contact Email</label>
-                                <input type="email" required placeholder="your.name@example.ca" class="w-full bg-white border border-slate-300 p-2 rounded text-gunpost-textDark focus:outline-none focus:border-gunpost-slate">
-                            </div>
-                            <div>
-                                <label class="block font-bold text-gunpost-textDark mb-1">Special Notes / Baseplate Type</label>
-                                <textarea rows="3" placeholder="Specify if using extended basepads or custom springs..." class="w-full bg-white border border-slate-300 p-2 rounded text-gunpost-textDark focus:outline-none focus:border-gunpost-slate"></textarea>
-                            </div>
-                            <button type="submit" class="bg-gunpost-green hover:bg-gunpost-greenHover text-white font-bold text-xs px-5 py-2.5 rounded transition-colors w-full">
-                                SUBMIT CUSTOM REQUEST
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </main>
 
-    <!-- SHOPPING CART SLIDE-OUT DRAWER -->
-    <div id="cart-drawer-backdrop" class="fixed inset-0 bg-black/50 z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <!-- PRODUCT WINDOW (opens when a product is clicked) -->
+    <div id="product-modal" class="hidden fixed inset-0 z-50 bg-black/60 overflow-y-auto">
+        <div class="min-h-full flex items-start sm:items-center justify-center p-4">
+            <div id="product-modal-body" class="bg-white w-full max-w-4xl rounded shadow-2xl relative">
+                <!-- filled by app.js -->
+            </div>
+        </div>
+    </div>
 
-    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white border-l border-gunpost-border z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between shadow-2xl">
+    <!-- SHOPPING CART SLIDE-OUT DRAWER -->
+    <div id="cart-drawer-backdrop" class="fixed inset-0 bg-black/50 z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white border-l border-gunpost-border z-40 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between shadow-2xl">
         <!-- Cart Drawer Header -->
         <div class="bg-gunpost-navy text-white p-4 flex items-center justify-between">
             <div class="flex items-center space-x-2 font-bold text-xs">
                 <i class="fa-solid fa-cart-shopping text-gunpost-green"></i>
                 <span>YOUR CART</span>
             </div>
-            <button id="cart-close-btn" class="text-slate-300 hover:text-white p-1">
+            <button id="cart-close-btn" class="text-slate-300 hover:text-white p-1" aria-label="Close cart">
                 <i class="fa-solid fa-xmark text-base"></i>
             </button>
         </div>
 
         <!-- Cart Items Container -->
-        <div id="cart-items-container" class="flex-grow p-4 overflow-y-auto space-y-3">
-            <!-- Dynamic Cart Items -->
-        </div>
+        <div id="cart-items-container" class="flex-grow p-4 overflow-y-auto space-y-3"></div>
 
         <!-- Cart Summary Footer -->
         <div class="p-4 border-t border-gunpost-border bg-slate-50 space-y-3">
@@ -245,8 +160,8 @@
                     <span id="cart-subtotal" class="font-bold text-gunpost-textDark">$0.00 CAD</span>
                 </div>
                 <div class="flex justify-between text-gunpost-textMuted">
-                    <span>Estimated Shipping</span>
-                    <span class="text-gunpost-green font-medium">Calculated at Checkout</span>
+                    <span>Shipping &amp; taxes</span>
+                    <span class="text-gunpost-green font-medium">Calculated at checkout</span>
                 </div>
                 <div class="flex justify-between text-sm font-bold text-gunpost-textDark pt-2 border-t border-slate-200">
                     <span>Total (CAD)</span>
@@ -265,21 +180,23 @@
     <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2 pointer-events-none"></div>
 
     <!-- FOOTER -->
-    <footer class="bg-gunpost-navy text-slate-300 text-xs border-t-2 border-gunpost-green py-8">
+    <footer class="bg-gunpost-navy text-slate-300 text-xs border-t-2 border-gunpost-green py-8 mt-10">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
                 <div class="font-bold text-white text-sm mb-2 flex items-center">
                     <i class="fa-solid fa-shield text-gunpost-green mr-2"></i> MACH ONE LOADERS
                 </div>
                 <p class="text-slate-400 text-[11px] leading-relaxed">
-                    Precision magazine loaders engineered for range convenience and long-lasting durability. Manufactured and distributed in Ontario, Canada.
+                    Precision magazine loaders and firearm accessories engineered for range convenience and long-lasting durability. Manufactured and distributed in Ontario, Canada.
                 </p>
             </div>
             <div>
-                <div class="font-bold text-white text-sm mb-2">QUICK LINKS</div>
+                <div class="font-bold text-white text-sm mb-2">SHOP</div>
                 <ul class="space-y-1 text-[11px] text-slate-300">
-                    <li><a href="#catalog" class="hover:text-white">All Loaders &amp; Accessories</a></li>
-                    <li><a href="#custom-order" class="hover:text-white">Custom Loader Requests</a></li>
+                    <li><a href="#catalog" class="hover:text-white">Catalog</a></li>
+                    <li><a href="#finder" class="hover:text-white">Find My Model</a></li>
+                    <li><a href="#instructions" class="hover:text-white">Product Instructions</a></li>
+                    <li><a href="#bulk" class="hover:text-white">Bulk Orders</a></li>
                 </ul>
             </div>
             <div>
@@ -287,17 +204,17 @@
                 <div class="text-[11px] space-y-1 text-slate-300">
                     <p><i class="fa-solid fa-globe text-slate-400 w-4"></i> machoneloaders.ca</p>
                     <p><i class="fa-solid fa-envelope text-slate-400 w-4"></i> sales@machoneloaders.ca</p>
-                    <p><i class="fa-solid fa-truck text-slate-400 w-4"></i> Canada-Wide Tracked Shipping</p>
-                    <p><i class="fa-solid fa-shield-halved text-slate-400 w-4"></i> Lifetime Material Guarantee</p>
+                    <p><i class="fa-solid fa-truck text-slate-400 w-4"></i> Canada-wide tracked shipping</p>
+                    <p><i class="fa-solid fa-file-lines text-slate-400 w-4"></i> <a href="legal.html" class="hover:text-white underline">Legal Information</a></p>
                 </div>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 pt-6 mt-6 border-t border-slate-700 text-center text-[10px] text-slate-400">
-            &copy; 2026 Mach One Loaders (machoneloaders.ca). All Rights Reserved. Canadian Firearms Accessory Retailer.
+            &copy; 2026 Mach One Loaders (machoneloaders.ca). All rights reserved. Sold to lawful Canadian customers only. <a href="legal.html" class="hover:text-white underline">Legal Information</a>
         </div>
     </footer>
 
     <!-- Main JavaScript Logic -->
-    <script src="app.js?v=2"></script>
+    <script src="app.js?v=3"></script>
 </body>
 </html>
